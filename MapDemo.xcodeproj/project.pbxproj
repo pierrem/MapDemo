@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8F93C6F61A95049A007E0BD1 /* DepartementOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F93C6F51A95049A007E0BD1 /* DepartementOverlay.swift */; };
+		8F93C6F81A953A3C007E0BD1 /* DepartementOverlayRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F93C6F71A953A3C007E0BD1 /* DepartementOverlayRenderer.swift */; };
 		8F97C10D1A924EAF00E679E6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F97C10C1A924EAF00E679E6 /* AppDelegate.swift */; };
-		8F97C1111A924EAF00E679E6 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F97C1101A924EAF00E679E6 /* SecondViewController.swift */; };
 		8F97C1141A924EAF00E679E6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8F97C1121A924EAF00E679E6 /* Main.storyboard */; };
 		8F97C1161A924EAF00E679E6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F97C1151A924EAF00E679E6 /* Images.xcassets */; };
 		8F97C1191A924EAF00E679E6 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8F97C1171A924EAF00E679E6 /* LaunchScreen.xib */; };
@@ -30,10 +31,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8F93C6F51A95049A007E0BD1 /* DepartementOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DepartementOverlay.swift; sourceTree = "<group>"; };
+		8F93C6F71A953A3C007E0BD1 /* DepartementOverlayRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DepartementOverlayRenderer.swift; sourceTree = "<group>"; };
 		8F97C1071A924EAF00E679E6 /* MapDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F97C10B1A924EAF00E679E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8F97C10C1A924EAF00E679E6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		8F97C1101A924EAF00E679E6 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		8F97C1131A924EAF00E679E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8F97C1151A924EAF00E679E6 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8F97C1181A924EAF00E679E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -89,8 +91,9 @@
 			children = (
 				8F97C10C1A924EAF00E679E6 /* AppDelegate.swift */,
 				8F97C12E1A92524000E679E6 /* FrenchMapViewController.swift */,
+				8F93C6F71A953A3C007E0BD1 /* DepartementOverlayRenderer.swift */,
+				8F93C6F51A95049A007E0BD1 /* DepartementOverlay.swift */,
 				8FCB5F3B1A94A2890042964A /* DepartementsDatabase.swift */,
-				8F97C1101A924EAF00E679E6 /* SecondViewController.swift */,
 				8F97C1121A924EAF00E679E6 /* Main.storyboard */,
 				8F97C1151A924EAF00E679E6 /* Images.xcassets */,
 				8F97C1171A924EAF00E679E6 /* LaunchScreen.xib */,
@@ -234,9 +237,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8F97C1111A924EAF00E679E6 /* SecondViewController.swift in Sources */,
 				8F97C10D1A924EAF00E679E6 /* AppDelegate.swift in Sources */,
 				8FCB5F3C1A94A2890042964A /* DepartementsDatabase.swift in Sources */,
+				8F93C6F81A953A3C007E0BD1 /* DepartementOverlayRenderer.swift in Sources */,
+				8F93C6F61A95049A007E0BD1 /* DepartementOverlay.swift in Sources */,
 				8F97C12F1A92524000E679E6 /* FrenchMapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

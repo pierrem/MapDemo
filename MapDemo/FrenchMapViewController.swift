@@ -12,28 +12,45 @@ import MapKit
 class FrenchMapViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     
-    private var template:String? = "http://tile.stamen.com/watercolor/{z}/{x}/{y}.png";
-    private var overlay:MKTileOverlay? = nil
+    var useOpenTiles = true
+    private let template:String = "http://tile.stamen.com/watercolor/{z}/{x}/{y}.png";
+    //private let template:String = "http://tile.openstreetmap.org/{z}/{x}/{y}.png";
+    private var baseOverlay:MKTileOverlay? = nil
+    private var departementOverlay:DepartementOverlay? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.overlay = MKTileOverlay(URLTemplate:template)
-        if self.overlay != nil {
-            self.overlay!.canReplaceMapContent = true;
-            self.mapView.addOverlay(self.overlay, level:MKOverlayLevel.AboveLabels)
+        if (useOpenTiles) {
+            self.baseOverlay = MKTileOverlay(URLTemplate:template)
+            if self.baseOverlay != nil {
+                self.baseOverlay!.canReplaceMapContent = true;
+                self.mapView.addOverlay(self.baseOverlay, level:MKOverlayLevel.AboveRoads)
+            }
         }
         
-        DepartementsDatabase.sharedInstance
+        self.departementOverlay = DepartementOverlay()
+        if self.departementOverlay != nil {
+            self.mapView.addOverlay(self.departementOverlay, level:MKOverlayLevel.AboveLabels)
+        }
         
+        
+        
+        // force initialisation here
+        DepartementsDatabase.sharedInstance
     }
     
     // MARK: - MKMapViewDelegate
     func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
         if let tileOverlay = overlay as? MKTileOverlay {
-            if (tileOverlay == self.overlay) {
-                let rendered = MKTileOverlayRenderer(overlay:overlay)
-                return rendered
+            if (tileOverlay == self.baseOverlay) {
+                return MKTileOverlayRenderer(overlay:overlay)
+            }
+        }
+        else if let departementOverlay = overlay as? DepartementOverlay {
+            println("rendererForOverlay DepartementOverlay")
+            if (departementOverlay == self.departementOverlay) {
+                return DepartementOverlayRenderer(overlay:overlay)
             }
         }
         return nil
