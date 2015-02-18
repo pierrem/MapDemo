@@ -15,6 +15,8 @@
 		8F97C1251A924EAF00E679E6 /* MapDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F97C1241A924EAF00E679E6 /* MapDemoTests.swift */; };
 		8F97C12F1A92524000E679E6 /* FrenchMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F97C12E1A92524000E679E6 /* FrenchMapViewController.swift */; };
 		8F97C1311A92532C00E679E6 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F97C1301A92532C00E679E6 /* MapKit.framework */; };
+		8FCB5F3A1A949D5B0042964A /* Data in Resources */ = {isa = PBXBuildFile; fileRef = 8FCB5F391A949D5B0042964A /* Data */; };
+		8FCB5F3C1A94A2890042964A /* DepartementsDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FCB5F3B1A94A2890042964A /* DepartementsDatabase.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +42,8 @@
 		8F97C1241A924EAF00E679E6 /* MapDemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDemoTests.swift; sourceTree = "<group>"; };
 		8F97C12E1A92524000E679E6 /* FrenchMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrenchMapViewController.swift; sourceTree = "<group>"; };
 		8F97C1301A92532C00E679E6 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		8FCB5F391A949D5B0042964A /* Data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Data; sourceTree = "<group>"; };
+		8FCB5F3B1A94A2890042964A /* DepartementsDatabase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DepartementsDatabase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,10 +89,12 @@
 			children = (
 				8F97C10C1A924EAF00E679E6 /* AppDelegate.swift */,
 				8F97C12E1A92524000E679E6 /* FrenchMapViewController.swift */,
+				8FCB5F3B1A94A2890042964A /* DepartementsDatabase.swift */,
 				8F97C1101A924EAF00E679E6 /* SecondViewController.swift */,
 				8F97C1121A924EAF00E679E6 /* Main.storyboard */,
 				8F97C1151A924EAF00E679E6 /* Images.xcassets */,
 				8F97C1171A924EAF00E679E6 /* LaunchScreen.xib */,
+				8FCB5F391A949D5B0042964A /* Data */,
 				8F97C10A1A924EAF00E679E6 /* Supporting Files */,
 			);
 			path = MapDemo;
@@ -209,6 +215,7 @@
 			files = (
 				8F97C1141A924EAF00E679E6 /* Main.storyboard in Resources */,
 				8F97C1191A924EAF00E679E6 /* LaunchScreen.xib in Resources */,
+				8FCB5F3A1A949D5B0042964A /* Data in Resources */,
 				8F97C1161A924EAF00E679E6 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -229,6 +236,7 @@
 			files = (
 				8F97C1111A924EAF00E679E6 /* SecondViewController.swift in Sources */,
 				8F97C10D1A924EAF00E679E6 /* AppDelegate.swift in Sources */,
+				8FCB5F3C1A94A2890042964A /* DepartementsDatabase.swift in Sources */,
 				8F97C12F1A92524000E679E6 /* FrenchMapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -425,6 +433,7 @@
 				8F97C12A1A924EAF00E679E6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8F97C12B1A924EAF00E679E6 /* Build configuration list for PBXNativeTarget "MapDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -433,6 +442,7 @@
 				8F97C12D1A924EAF00E679E6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

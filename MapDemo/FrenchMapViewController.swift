@@ -11,21 +11,32 @@ import MapKit
 
 class FrenchMapViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
-
-    //private var template:String? = "http://tile.openstreetmap.org/{z}/{x}/{y}.png";
+    
     private var template:String? = "http://tile.stamen.com/watercolor/{z}/{x}/{y}.png";
-
-
+    private var overlay:MKTileOverlay? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        var overlay:MKTileOverlay = MKTileOverlay(URLTemplate:template)
-        overlay.canReplaceMapContent = true;
-        self.mapView.addOverlay(overlay, level:MKOverlayLevel.AboveLabels)
+        
+        self.overlay = MKTileOverlay(URLTemplate:template)
+        if self.overlay != nil {
+            self.overlay!.canReplaceMapContent = true;
+            self.mapView.addOverlay(self.overlay, level:MKOverlayLevel.AboveLabels)
+        }
+        
+        DepartementsDatabase.sharedInstance
+        
     }
     
-    func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!)  -> MKOverlayRenderer! {
-        let rendered = MKTileOverlayRenderer(overlay:overlay)
-        return rendered
+    // MARK: - MKMapViewDelegate
+    func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
+        if let tileOverlay = overlay as? MKTileOverlay {
+            if (tileOverlay == self.overlay) {
+                let rendered = MKTileOverlayRenderer(overlay:overlay)
+                return rendered
+            }
+        }
+        return nil
     }
     
 }
