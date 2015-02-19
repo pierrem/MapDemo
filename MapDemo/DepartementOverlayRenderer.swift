@@ -17,23 +17,52 @@ class DepartementOverlayRenderer: MKOverlayRenderer {
     }
     
     override func drawMapRect(mapRect:MKMapRect, zoomScale: MKZoomScale, inContext context: CGContext!) {
-        // println is not thread safe !
-        //        dispatch_async(dispatch_get_main_queue(), {
-        //            println("drawMapRect \(zoomScale)")
-        //        })
         
-        // test: draw borders
+        let departementsToDraw = DepartementsDatabase.sharedInstance.departementsIntersectingRect(mapRect)
+/*
+        dispatch_async(dispatch_get_main_queue(), {
+            println("--")
+            for departement in departementsToDraw {
+                println("\(departement.name)")
+            }
+        })
+*/
+        for departement in departementsToDraw {
+            drawDepartement(departement, zoomScale:zoomScale, inContext:context)
+        }
+        
+    }
+    
+    func drawDepartement(departement:Departement, zoomScale: MKZoomScale, inContext context: CGContext!) {
         var path = CGPathCreateMutable()
-        var rect:CGRect = rectForMapRect(mapRect)
-        CGPathAddRect(path, nil, rect)
+        
+        let polygons = departement.geometry.polygons
+        for rings in polygons {   // a GeoPolygon
+            for ring in rings {     // a GeoRing, ie an array of CLLocationCoordinate2D
+                let coordinate = ring[0]
+                let mapPoint = MKMapPointForCoordinate(coordinate)
+                let relativePoint = self.pointForMapPoint(mapPoint)
+                CGPathMoveToPoint(path, nil, relativePoint.x, relativePoint.y)
+                var isFirst = false
+                for coordinate in ring {
+                    let mapPoint = MKMapPointForCoordinate(coordinate)
+                    let relativePoint = self.pointForMapPoint(mapPoint)
+                    if (isFirst) {
+                        isFirst =  false
+                        CGPathMoveToPoint(path, nil, relativePoint.x, relativePoint.y)
+                    }
+                    else {
+                        CGPathAddLineToPoint(path, nil, relativePoint.x, relativePoint.y)
+                    }
+                }
+            }
+        }
+        
         CGContextSetLineWidth(context, UIScreen.mainScreen().scale / zoomScale)     // 1 point width, not airline on retina !
         CGContextSetStrokeColorWithColor(context, UIColor.redColor().CGColor)
         CGContextSetAlpha(context, 1.0)
         CGContextBeginPath(context)
         CGContextAddPath(context, path)
         CGContextStrokePath(context)
-        
-        
     }
-    
 }

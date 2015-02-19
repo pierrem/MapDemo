@@ -9,18 +9,25 @@
 import Foundation
 import MapKit
 
-
-
 typealias GeoRing = Array<CLLocationCoordinate2D>       // an elementary polygon on earth
 typealias GeoPolygon = Array<GeoRing>                    // the first GeoRing must be the exterior ring and any others must be interior rings or holes
-typealias GeoGeometry = Array<GeoPolygon>                // an array of polygons, representing a geographical entity
 
-struct Departement {
+struct GeoGeometry: Printable {
+    var polygons:Array<GeoPolygon>      // an array of GeoPolygon, representing a geographical entity
+    var mapRect:MKMapRect
+    var description: String {   // printable protocol
+        return "(\(polygons.count), mapRect:\(mapRect)"
+    }
+}
+
+struct Departement : Printable {
     var code:String
     var name:String
     var geometry:GeoGeometry
+    var description: String {
+        return "\(code) \(name) \(geometry)"
+    }
 }
-
 
 class DepartementsDatabase {
     
@@ -62,12 +69,12 @@ class DepartementsDatabase {
     }
     
     private func loadGeometry(jsonGeometry:Dictionary<String, AnyObject>) -> GeoGeometry {
-        var geometry = GeoGeometry()
+        var geometry = GeoGeometry(polygons:Array(), mapRect:MKMapRectNull)
         if let geometryType = jsonGeometry["type"] as? String, coordinates = jsonGeometry["coordinates"] as? Array<AnyObject> {
             if geometryType == "Polygon" {
                 // jsonGeometry represents a GeoPolygon, ie an array of GeoRings
                 var geoPolygon = loadGeoPolygon(coordinates)
-                geometry.append(geoPolygon)
+                geometry.polygons.append(geoPolygon)
             }
                 
             else if geometryType == "MultiPolygon" {
@@ -75,7 +82,7 @@ class DepartementsDatabase {
                 for jsonObj in coordinates {
                     if let jsonPolygon = jsonObj as? Array<AnyObject> {
                         var geoPolygon = loadGeoPolygon(jsonPolygon)
-                        geometry.append(geoPolygon)
+                        geometry.polygons.append(geoPolygon)
                     }
                 }
             }
@@ -83,6 +90,8 @@ class DepartementsDatabase {
                 println("invalid geometryType: \(geometryType)")
             }
         }
+        updateGeometryExtent(&geometry)
+        
         return geometry
     }
     
@@ -91,11 +100,13 @@ class DepartementsDatabase {
         for jsonRing in coordinates {
             if let ring = jsonRing as? Array<Array<CLLocationDegrees>> {
                 var geoRing = GeoRing()
-                for jsonPoint in ring {     // TODO: test ring.count
-                    let longitude = jsonPoint[0]
-                    let latitude = jsonPoint[1]
-                    let point = CLLocationCoordinate2D(latitude:latitude, longitude:longitude)
-                    geoRing.append(point)
+                for jsonPoint in ring {
+                    if jsonPoint.count == 2 {
+                        let longitude = jsonPoint[0]
+                        let latitude = jsonPoint[1]
+                        let point = CLLocationCoordinate2D(latitude:latitude, longitude:longitude)
+                        geoRing.append(point)
+                    }
                 }
                 geoPolygon.append(geoRing)
             }
@@ -103,7 +114,39 @@ class DepartementsDatabase {
         return geoPolygon
     }
     
+    private func updateGeometryExtent(inout geometry:GeoGeometry) {
+        var minLatitude = 90.0, maxLatitude = 0.0, minLongitude = 360.0, maxLongitude = 0.0
+        
+        for geoPolygon in geometry.polygons {
+            for geoRing in geoPolygon {
+                for coordinate in geoRing { // a CLLocationCoordinate2D
+                    if coordinate.latitude < minLatitude {minLatitude = coordinate.latitude}
+                    if coordinate.latitude > maxLatitude {maxLatitude = coordinate.latitude}
+                    if coordinate.longitude < minLongitude {minLongitude = coordinate.longitude}
+                    if coordinate.longitude > maxLongitude {maxLongitude = coordinate.longitude}
+                }
+            }
+        }
+        
+        // convert to a MKMapRect
+        let upperLeft = MKMapPointForCoordinate(CLLocationCoordinate2D(latitude:maxLatitude, longitude:minLongitude))
+        let lowerRight = MKMapPointForCoordinate(CLLocationCoordinate2D(latitude:minLatitude, longitude:maxLongitude))
+        let mapRect = MKMapRectMake(upperLeft.x, upperLeft.y, lowerRight.x - upperLeft.x, lowerRight.y - upperLeft.y)
+        geometry.mapRect = mapRect;
+    }
+    
+    func departementsIntersectingRect(rect:MKMapRect) -> Array<Departement> {
+        var result = Array<Departement>()
+        for departement in self.departements {
+            if MKMapRectIntersectsRect(rect, departement.geometry.mapRect) {
+                result.append(departement)
+            }
+        }
+        return result
+    }
 }
+
+
 
 
 
