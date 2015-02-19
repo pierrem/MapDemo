@@ -1,6 +1,8 @@
 # MapDemo
 MapKit with open data in Swift
 
+Requires Swift 1.2 (XCode 6.3) !
+
 This project demonstrates some MapKit features with Swift.
 It displays french département borders, extracted from a public database converted to GeoJSON.
 

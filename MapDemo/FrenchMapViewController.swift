@@ -34,7 +34,7 @@ class FrenchMapViewController: UIViewController {
             self.mapView.addOverlay(self.departementOverlay, level:MKOverlayLevel.AboveLabels)
         }
         
-        DepartementsDatabase.sharedInstance  // force initialisation here
+        // DepartementsDatabase.sharedInstance  // force initialisation here
     }
     
     // MARK: - MKMapViewDelegate

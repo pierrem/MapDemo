@@ -41,7 +41,8 @@ class DepartementsDatabase {
     var departements = Array<Departement>()
     
     init () {
-        let dataPath = NSBundle.mainBundle().resourcePath! + "/Data/departements.geojson"
+        let dataPath = NSBundle.mainBundle().resourcePath! + "/Data/departements-100.geojson"   // precision reduced to 100 (meters ?)
+        // let dataPath = NSBundle.mainBundle().resourcePath! + "/Data/departements.geojson"
         let url = NSURL(fileURLWithPath: dataPath)
         let data = NSData(contentsOfURL:url!)
         self.loadFromJSON(data)
