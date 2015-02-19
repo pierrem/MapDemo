@@ -12,7 +12,7 @@ import MapKit
 class FrenchMapViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     
-    var useOpenTiles = true
+    var useAlternatesTiles = false      // Apple vs alternate tile server
     private let template:String = "http://tile.stamen.com/watercolor/{z}/{x}/{y}.png";
     //private let template:String = "http://tile.openstreetmap.org/{z}/{x}/{y}.png";
     private var baseOverlay:MKTileOverlay? = nil
@@ -21,7 +21,7 @@ class FrenchMapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if (useOpenTiles) {
+        if (useAlternatesTiles) {
             self.baseOverlay = MKTileOverlay(URLTemplate:template)
             if self.baseOverlay != nil {
                 self.baseOverlay!.canReplaceMapContent = true;
@@ -34,10 +34,7 @@ class FrenchMapViewController: UIViewController {
             self.mapView.addOverlay(self.departementOverlay, level:MKOverlayLevel.AboveLabels)
         }
         
-        
-        
-        // force initialisation here
-        DepartementsDatabase.sharedInstance
+        DepartementsDatabase.sharedInstance  // force initialisation here
     }
     
     // MARK: - MKMapViewDelegate
@@ -48,7 +45,6 @@ class FrenchMapViewController: UIViewController {
             }
         }
         else if let departementOverlay = overlay as? DepartementOverlay {
-            println("rendererForOverlay DepartementOverlay")
             if (departementOverlay == self.departementOverlay) {
                 return DepartementOverlayRenderer(overlay:overlay)
             }

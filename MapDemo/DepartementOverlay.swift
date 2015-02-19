@@ -10,22 +10,18 @@ import UIKit
 import MapKit
 
 class DepartementOverlay : NSObject, MKOverlay {
-   
+    
     // MARK:MKOverlay protocol
     
-    // from MKAnnotation protocol, for areas this should return the centroid of the area.
-    // in our case, it has no meaning ?
-    var coordinate: CLLocationCoordinate2D {
-        return CLLocationCoordinate2DMake(0, 0)
-    }
+    // MKAnnotation protocol (MKOverlay is an MKAnnotation): for areas this should return the centroid of the area.
+    // any meaning in our case ?
+    let coordinate = CLLocationCoordinate2D(latitude:0, longitude:0)
 
     var boundingMapRect:MKMapRect {
-        // France
-        // NE 51.089062, 9.559320
-        // SW 41.333740, -5.140600
-        let topLeft = CLLocationCoordinate2DMake(51.089062, -5.140600)
-        let bottomRight = CLLocationCoordinate2DMake(41.333740, 9.559320)
-        let MKupperLeft  = MKMapPointForCoordinate(topLeft)
+        // France: NE 51.089062, 9.559320, SW 41.333740, -5.140600
+        let topLeft = CLLocationCoordinate2D(latitude:51.089062, longitude:-5.140600)
+        let bottomRight = CLLocationCoordinate2D(latitude:41.333740, longitude:9.559320)
+        let MKupperLeft  = MKMapPointForCoordinate(topLeft)     // project on map
         let MKlowerRight = MKMapPointForCoordinate(bottomRight)
         let width  = MKlowerRight.x - MKupperLeft.x;
         let height = MKlowerRight.y - MKupperLeft.y;
