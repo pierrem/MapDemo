@@ -33,8 +33,6 @@ class FrenchMapViewController: UIViewController {
         if self.departementOverlay != nil {
             self.mapView.addOverlay(self.departementOverlay, level:MKOverlayLevel.AboveLabels)
         }
-        
-        // DepartementsDatabase.sharedInstance  // force initialisation here
     }
     
     // MARK: - MKMapViewDelegate

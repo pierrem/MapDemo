@@ -41,17 +41,20 @@ class DepartementsDatabase {
     var departements = Array<Departement>()
     
     init () {
-        let dataPath = NSBundle.mainBundle().resourcePath! + "/Data/departements-100.geojson"   // precision reduced to 100 (meters ?)
-        // let dataPath = NSBundle.mainBundle().resourcePath! + "/Data/departements.geojson"
+        // let dataPath = NSBundle.mainBundle().resourcePath! + "/Data/departements-100.geojson"   // precision reduced to 100 (meters ?)
+        let dataPath = NSBundle.mainBundle().resourcePath! + "/Data/departements.geojson"
         let url = NSURL(fileURLWithPath: dataPath)
         let data = NSData(contentsOfURL:url!)
         self.loadFromJSON(data)
     }
     
     private func loadFromJSON (data:NSData!) {
+        let startTime = CFAbsoluteTimeGetCurrent()
         if (data != nil) {
             var jsonError: NSError?
             var jsonData:AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &jsonError)
+            let duration = (CFAbsoluteTimeGetCurrent() - startTime)
+            println(String(format: "JSONObjectWithData %.4f sec", duration))
             
             if let jsonDictionary = jsonData as? Dictionary<String, AnyObject>,
                 jsonDepartements = jsonDictionary["features"] as? [Dictionary<String, AnyObject>] {
@@ -67,6 +70,8 @@ class DepartementsDatabase {
                     }
             }
         }
+        let duration = (CFAbsoluteTimeGetCurrent() - startTime)
+        println(String(format: "loadFromJSON %.4f sec", duration))      // aka [NSString stringWithFormat:
     }
     
     private func loadGeometry(jsonGeometry:Dictionary<String, AnyObject>) -> GeoGeometry {
@@ -99,7 +104,7 @@ class DepartementsDatabase {
     private func loadGeoPolygon(coordinates:Array<AnyObject>) -> GeoPolygon {
         var geoPolygon = GeoPolygon()
         for jsonRing in coordinates {
-            if let ring = jsonRing as? Array<Array<CLLocationDegrees>> {
+            if let ring = jsonRing as? Array<Array<CLLocationDegrees>> {        // expensive dynamic casting !
                 var geoRing = GeoRing()
                 for jsonPoint in ring {
                     if jsonPoint.count == 2 {
@@ -114,7 +119,7 @@ class DepartementsDatabase {
         }
         return geoPolygon
     }
-    
+        
     private func updateGeometryExtent(inout geometry:GeoGeometry) {
         var minLatitude = 90.0, maxLatitude = 0.0, minLongitude = 360.0, maxLongitude = 0.0
         

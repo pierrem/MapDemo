@@ -16,6 +16,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        // For profiling, we can force initialisation here before loading map.
+        // DepartementsDatabase.sharedInstance
+        
         return true
     }
 

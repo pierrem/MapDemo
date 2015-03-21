@@ -1,0 +1,61 @@
+LoadingJSON.txt
+---------------
+
+test pm vendredi 6 mars 2015
+
+
+let startTime = CFAbsoluteTimeGetCurrent()
+let duration = (CFAbsoluteTimeGetCurrent() - startTime)
+println(String(format: "duration %.4f sec", duration))      // aka [NSString stringWithFormat:
+
+sur iPad Air: loadFromJSON 2.5804 sec
+sur simulateur iPad Air: loadFromJSON 1.3215 sec
+
+avec base complete : loadFromJSON 3.7216 sec
+
+JSONObjectWithData 0.3797 sec
+loadFromJSON 2.2686 sec
+
+
+Attention, faire les test avant mise en place de la carte, sur application:didFinishLaunchingWithOptions
+
+JSONObjectWithData 0.3451 sec
+loadFromJSON 2.1011 sec
+
+On est sur un seul coeur vraiment actif (97%), ensuite la carte charge tous les coeur (380% de charge)
+
+
+on passe le temps principalement dans:
+if let ring = jsonRing as? Array<Array<CLLocationDegrees>> {        // expensive dynamic casting !
+
+
+10 % sur le chargement du JSON
+84 % sur jsonRing as? Array<Array<CLLocationDegrees>>
+
+
+
+
+JSONObjectWithData : 0.3797 sec
+if let ring = jsonRing as? Array<Array<CLLocationDegrees>> {
+    .../...
+}
+
+10% of the time is spend in JSONObjectWithData
+84 % of the time is spend in the dynamic casting of array of coordinates:
+if let ring = jsonRing as? Array<Array<CLLocationDegrees>> {
+.../...
+}
+
+
+
+JSONObjectWithData 0.3604 sec
+loadFromJSON 2.0928 sec
+
+idem avec as!
+JSONObjectWithData 0.3388 sec
+loadFromJSON 2.0287 sec
+
+
+
+
+
