@@ -43,7 +43,7 @@ class DepartementOverlayRenderer: MKOverlayRenderer {
                 let mapPoint = MKMapPointForCoordinate(coordinate)
                 let relativePoint = self.pointForMapPoint(mapPoint)
                 CGPathMoveToPoint(path, nil, relativePoint.x, relativePoint.y)
-                var isFirst = false
+                var isFirst = true
                 for coordinate in ring {
                     let mapPoint = MKMapPointForCoordinate(coordinate)
                     let relativePoint = self.pointForMapPoint(mapPoint)
