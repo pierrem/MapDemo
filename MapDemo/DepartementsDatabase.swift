@@ -12,7 +12,7 @@ import MapKit
 typealias GeoRing = Array<CLLocationCoordinate2D>       // an elementary polygon on earth
 typealias GeoPolygon = Array<GeoRing>                    // the first GeoRing must be the exterior ring and any others must be interior rings or holes
 
-struct GeoGeometry: Printable {
+struct GeoGeometry: CustomStringConvertible {
     var polygons:Array<GeoPolygon>      // an array of GeoPolygon, representing a geographical entity
     var mapRect:MKMapRect
     var description: String {   // printable protocol
@@ -20,7 +20,7 @@ struct GeoGeometry: Printable {
     }
 }
 
-struct Departement : Printable {
+struct Departement : CustomStringConvertible {
     var code:String
     var name:String
     var geometry:GeoGeometry
@@ -44,7 +44,7 @@ class DepartementsDatabase {
         // let dataPath = NSBundle.mainBundle().resourcePath! + "/Data/departements-100.geojson"   // precision reduced to 100 (meters ?)
         let dataPath = NSBundle.mainBundle().resourcePath! + "/Data/departements.geojson"
         let url = NSURL(fileURLWithPath: dataPath)
-        let data = NSData(contentsOfURL:url!)
+        let data = NSData(contentsOfURL:url)
         self.loadFromJSON(data)
     }
     
@@ -52,9 +52,16 @@ class DepartementsDatabase {
         let startTime = CFAbsoluteTimeGetCurrent()
         if (data != nil) {
             var jsonError: NSError?
-            var jsonData:AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &jsonError)
+            var jsonData:AnyObject?
+            do {
+                jsonData = try NSJSONSerialization.JSONObjectWithData(data, options: [])
+            } catch let error as NSError {
+                jsonError = error
+                jsonData = nil
+                print("\(jsonError)")
+            }
             let duration = (CFAbsoluteTimeGetCurrent() - startTime)
-            println(String(format: "JSONObjectWithData %.4f sec", duration))
+            print(String(format: "JSONObjectWithData %.4f sec", duration))
             
             if let jsonDictionary = jsonData as? Dictionary<String, AnyObject>,
                 jsonDepartements = jsonDictionary["features"] as? [Dictionary<String, AnyObject>] {
@@ -71,7 +78,7 @@ class DepartementsDatabase {
             }
         }
         let duration = (CFAbsoluteTimeGetCurrent() - startTime)
-        println(String(format: "loadFromJSON %.4f sec", duration))      // aka [NSString stringWithFormat:
+        print(String(format: "loadFromJSON %.4f sec", duration))      // aka [NSString stringWithFormat:
     }
     
     private func loadGeometry(jsonGeometry:Dictionary<String, AnyObject>) -> GeoGeometry {
@@ -79,7 +86,7 @@ class DepartementsDatabase {
         if let geometryType = jsonGeometry["type"] as? String, coordinates = jsonGeometry["coordinates"] as? Array<AnyObject> {
             if geometryType == "Polygon" {
                 // jsonGeometry represents a GeoPolygon, ie an array of GeoRings
-                var geoPolygon = loadGeoPolygon(coordinates)
+                let geoPolygon = loadGeoPolygon(coordinates)
                 geometry.polygons.append(geoPolygon)
             }
                 
@@ -87,13 +94,13 @@ class DepartementsDatabase {
                 // jsonGeometry represents an array of GeoPolygons
                 for jsonObj in coordinates {
                     if let jsonPolygon = jsonObj as? Array<AnyObject> {
-                        var geoPolygon = loadGeoPolygon(jsonPolygon)
+                        let geoPolygon = loadGeoPolygon(jsonPolygon)
                         geometry.polygons.append(geoPolygon)
                     }
                 }
             }
             else {
-                println("invalid geometryType: \(geometryType)")
+                print("invalid geometryType: \(geometryType)")
             }
         }
         updateGeometryExtent(&geometry)

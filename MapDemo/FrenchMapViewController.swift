@@ -25,13 +25,13 @@ class FrenchMapViewController: UIViewController {
             self.baseOverlay = MKTileOverlay(URLTemplate:template)
             if self.baseOverlay != nil {
                 self.baseOverlay!.canReplaceMapContent = true;
-                self.mapView.addOverlay(self.baseOverlay, level:MKOverlayLevel.AboveRoads)
+                self.mapView.addOverlay(self.baseOverlay!, level:MKOverlayLevel.AboveRoads)
             }
         }
         
         self.departementOverlay = DepartementOverlay()
         if self.departementOverlay != nil {
-            self.mapView.addOverlay(self.departementOverlay, level:MKOverlayLevel.AboveLabels)
+            self.mapView.addOverlay(self.departementOverlay!, level:MKOverlayLevel.AboveLabels)
         }
     }
     

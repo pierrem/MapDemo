@@ -16,7 +16,7 @@ class DepartementOverlayRenderer: MKOverlayRenderer {
         return true
     }
     
-    override func drawMapRect(mapRect:MKMapRect, zoomScale: MKZoomScale, inContext context: CGContext!) {
+    override func drawMapRect(mapRect:MKMapRect, zoomScale: MKZoomScale, inContext context: CGContext) {
         
         let departementsToDraw = DepartementsDatabase.sharedInstance.departementsIntersectingRect(mapRect)
 /*
@@ -34,7 +34,7 @@ class DepartementOverlayRenderer: MKOverlayRenderer {
     }
     
     func drawDepartement(departement:Departement, zoomScale: MKZoomScale, inContext context: CGContext!) {
-        var path = CGPathCreateMutable()
+        let path = CGPathCreateMutable()
         
         let polygons = departement.geometry.polygons
         for rings in polygons {   // a GeoPolygon
